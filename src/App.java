@@ -2,10 +2,18 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class App {
+
+    private static final long MEGABYTE = 1024L * 1024L;
+
+    public static long bytesToMegabytes(long bytes) {
+        return bytes / MEGABYTE;
+    }
+
     public static void main(String[] args) throws Exception {
         App app = new App();
         // app.testBST();
         // app.testDLL();
+        
         app.testOBook();
     }
 
@@ -62,17 +70,22 @@ public class App {
 
         Random r = new Random();
         int lowPrice = 30;
-        int highPrice = 40;
+        int highPrice = 70;
 
-        for(int i=0; i<100; i++){
+        for(int i=0; i<100000; i++){
             int price = r.nextInt(highPrice-lowPrice) + lowPrice;
             int orderId = i;
             obook.newOrder(orderId, price);
         }
 
-        obook.tree.print(obook.tree.root);
+         Runtime runtime = Runtime.getRuntime();
+         runtime.gc();
+         long memory = runtime.totalMemory() - runtime.freeMemory();
+         System.out.println("Used memory is bytes: " + memory);
+         System.out.println("Used memory is megabytes: " + bytesToMegabytes(memory));
+        // obook.tree.print(obook.tree.root);
 
-        obook.priceMap.get(35).ll.print();
-        System.out.println(obook.priceMap.get(35).ll.head.key);
+        // obook.priceMap.get(35).ll.print();
+        // System.out.println(obook.priceMap.get(35).ll.head.key);
     }
 }
